@@ -1,34 +1,65 @@
 use anybuf::Anybuf;
-use contract::{
-    msg::{InstantiateMsg, MigrateMsg},
-    state::Config,
-    Contract, ContractExecuteMsgFns, ContractQueryMsgFns,
-};
 use cosmos_sdk_proto::Any;
+use cosmwasm_std::Addr;
 use cw_orch::{
-    anyhow::{self, Ok},
-    daemon::{networks, TxSender},
+    anyhow::{
+        self,
+        Ok,
+    },
+    daemon::{
+        networks,
+        TxSender,
+    },
     prelude::*,
 };
 use dotenv;
 use pretty_env_logger;
+use roll_a_dice::{
+    config::Config,
+    msg::{
+        InstantiateMsg,
+        MigrateMsg,
+    },
+    Contract,
+    ContractExecuteMsgFns,
+    ContractQueryMsgFns,
+};
 
 const FEE_COLLECTION_ADDR: &str = "juno1rec44j9xq8aj4w5kun796f89njzvdlezwk7cy4";
 
-pub fn main() -> anyhow::Result<()> {
+pub fn main() -> anyhow::Result<(),> {
+
     dotenv::dotenv().ok();
+
     pretty_env_logger::init();
 
     let network = networks::UNI_6;
-    let chain = DaemonBuilder::new(network).build()?;
 
-    let contract = Contract::new(chain.clone());
+    let chain = DaemonBuilder::new(network,).build()?;
+
+    let contract = Contract::new(chain.clone(),);
+
     let sender = chain.sender().address();
 
     contract.upload_if_needed()?;
 
     if contract.address().is_err() {
-        contract.instantiate(&InstantiateMsg { config: Config {} }, Some(&sender), None)?;
+
+        contract.instantiate(
+            &InstantiateMsg {
+                config: Config {
+                    fee_percentage: 10,
+                    random_cw_address: Addr::unchecked("juno1rec44j9xq8aj4w5kun796f89njzvdlezwk7cy4",),
+                    accepted_denom: "ujuno".to_string(),
+                    operator: Some(sender.clone(),),
+                    disabled: false,
+                    min_bet: 1000000,
+                    gas_limit: 1000000,
+                },
+            },
+            Some(&sender,),
+            None,
+        )?;
 
         let _ = chain.commit_any::<Any>(
             vec![juno_feeshare_msg(
@@ -39,16 +70,25 @@ pub fn main() -> anyhow::Result<()> {
             None,
         );
     } else {
-        contract.migrate_if_needed(&MigrateMsg {})?;
+
+        contract.migrate_if_needed(&MigrateMsg {},)?;
     }
 
     // can call any necessary execution messages here like adding admin, etc.
-    contract.set_config(Config {})?;
+    contract.set_config(Config {
+        fee_percentage: 10,
+        random_cw_address: Addr::unchecked("juno1rec44j9xq8aj4w5kun796f89njzvdlezwk7cy4",),
+        accepted_denom: "ujuno".to_string(),
+        operator: Some(sender.clone(),),
+        disabled: false,
+        min_bet: 1000000,
+        gas_limit: 1000000,
+    },)?;
 
     // can also query any necessary data here from the contract
     contract.config()?;
 
-    Ok(())
+    Ok((),)
 }
 
 pub fn juno_feeshare_msg(
@@ -56,12 +96,13 @@ pub fn juno_feeshare_msg(
     deployer_address: String,
     withdrawer_address: String,
 ) -> Any {
+
     Any {
         type_url: "/juno.feeshare.v1.MsgRegisterFeeShare".to_string(),
         value: Anybuf::new()
-            .append_string(1, contract_address)
-            .append_string(2, deployer_address)
-            .append_string(3, withdrawer_address)
+            .append_string(1, contract_address,)
+            .append_string(2, deployer_address,)
+            .append_string(3, withdrawer_address,)
             .into_vec(),
     }
 }
@@ -71,12 +112,13 @@ pub fn juno_update_feeshare_msg(
     deployer_address: String,
     withdrawer_address: String,
 ) -> Any {
+
     Any {
         type_url: "/juno.feeshare.v1.MsgUpdateFeeShare".to_string(),
         value: Anybuf::new()
-            .append_string(1, contract_address)
-            .append_string(2, deployer_address)
-            .append_string(3, withdrawer_address)
+            .append_string(1, contract_address,)
+            .append_string(2, deployer_address,)
+            .append_string(3, withdrawer_address,)
             .into_vec(),
     }
 }

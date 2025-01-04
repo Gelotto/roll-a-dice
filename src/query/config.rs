@@ -1,12 +1,15 @@
 use crate::{
+    config::get_current_config,
     error::ContractError,
     responses::ConfigResponse,
-    state::{QueryContext, CONFIG},
+    state::QueryContext,
 };
 
-pub fn query_config(ctx: QueryContext) -> Result<ConfigResponse, ContractError> {
+pub fn query_config(ctx: QueryContext,) -> Result<ConfigResponse, ContractError,> {
+
     let QueryContext { deps, .. } = ctx;
-    Ok(CONFIG
-        .load(deps.storage)
-        .and_then(|config| Ok(ConfigResponse(config)))?)
+
+    let saved_config = get_current_config(deps.storage,);
+
+    Ok(ConfigResponse(saved_config,),)
 }

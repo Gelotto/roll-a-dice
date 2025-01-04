@@ -1,6 +1,6 @@
 max_width = 120
 blank_lines_lower_bound = 1
-fn_args_layout = "Vertical"
+fn_params_layout = "Vertical"
 imports_layout = "Vertical"
 match_block_trailing_comma = true
 trailing_comma = "Always"
