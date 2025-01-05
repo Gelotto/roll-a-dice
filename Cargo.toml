@@ -38,7 +38,7 @@ schemars = "0.8.16"
 serde = { version = "1.0.196", default-features = false, features = ["derive"] }
 thiserror = { version = "1.0.56" }
 cw-orch = { version = "0.24.1", features = ["daemon"] }
-cw-random = {version = "0.0.1", path = "../cw-random", features = ["library"]}
+cw-random = {version = "0.0.1", path = "../cw-random", features=["library"]}
 
 [dev-dependencies]
 cw-multi-test = { version = "1.2.0" }
@@ -47,4 +47,4 @@ pretty_env_logger = { version = "0.5.0" }
 anybuf = { version = "0.5.0" }
 cosmos-sdk-proto = { version = "0.21.1", default-features = false }
 cosmrs = { version = "0.14.0" }
-cw-random = { version = "0.0.1", path = "../cw-random" }
+cw-random = { version = "0.0.1", path = "../cw-random", features=["test"] }
