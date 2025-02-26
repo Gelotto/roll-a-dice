@@ -9,7 +9,7 @@ use crate::{
 
 pub fn query_game(
     ctx: QueryContext,
-    id: u64,
+    id: String,
 ) -> Result<Option<QueryPlayResponse,>, ContractError,> {
 
     let QueryContext { deps, .. } = ctx;

@@ -105,12 +105,12 @@ mod test_user_games {
 
             let game = query_user_games_response.games.get(i,).unwrap();
 
-            assert_eq!(game.id, *req_id_vec.get(i).unwrap());
+            assert_eq!(game.id.u64(), *req_id_vec.get(i).unwrap());
         }
 
         assert_eq!(query_user_games_response.games.len(), limit as usize);
 
-        assert_eq!(query_user_games_response.next_cursor, Some(limit as u64));
+        assert_eq!(query_user_games_response.next_cursor, Some((limit as u64).into()));
 
         let new_limit = 15;
 
@@ -127,7 +127,7 @@ mod test_user_games {
 
             let game = query_user_games_response.games.get(i - 5,).unwrap();
 
-            assert_eq!(game.id, *req_id_vec.get(i).unwrap());
+            assert_eq!(game.id.u64(), *req_id_vec.get(i).unwrap());
         }
 
         assert_eq!(query_user_games_response.games.len(), 10);

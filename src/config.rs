@@ -3,12 +3,14 @@ use cosmwasm_std::{
     Addr,
     DepsMut,
     Storage,
+    Uint128,
+    Uint64,
 };
 use cw_storage_plus::Item;
 
 use crate::error::ContractError;
 
-pub const FEE_PERCENTAGE: Item<u64,> = Item::new("fee_percentage",);
+pub const FEE_PERCENTAGE: Item<Uint64,> = Item::new("fee_percentage",);
 
 pub const RANDOM_CW_ADDRESS: Item<Addr,> = Item::new("random_cw_address",);
 
@@ -16,25 +18,25 @@ pub const ACCEPTED_DENOM: Item<String,> = Item::new("accepted_denom",);
 
 pub const OPERATOR: Item<Addr,> = Item::new("operator",);
 
-pub const MAX_BET: Item<u128,> = Item::new("max_bet",);
+pub const MAX_BET: Item<Uint128,> = Item::new("max_bet",);
 
 pub const DISABLED: Item<bool,> = Item::new("disabled",);
 
-pub const MIN_BET: Item<u128,> = Item::new("min_bet",);
+pub const MIN_BET: Item<Uint128,> = Item::new("min_bet",);
 
 // GAS_LIMIT is used to set the gas limit for the random request ( it's the gas that the contract will use to handle the response, if it exceeds the gas limit, the receive randomness will fail)
-pub const GAS_LIMIT: Item<u64,> = Item::new("gas_limit",);
+pub const GAS_LIMIT: Item<Uint64,> = Item::new("gas_limit",);
 
 #[cw_serde]
 
 pub struct Config {
-    pub fee_percentage: u64,
+    pub fee_percentage: Uint64,
     pub random_cw_address: Addr,
     pub accepted_denom: String,
     pub operator: Option<Addr,>,
     pub disabled: bool,
-    pub min_bet: u128,
-    pub gas_limit: u64,
+    pub min_bet: Uint128,
+    pub gas_limit: Uint64,
     // pub max_bet: u128,
 }
 
@@ -115,7 +117,7 @@ pub fn get_disabled(storage: &dyn Storage,) -> Result<bool, ContractError,> {
 
 pub fn get_fee_percentage(storage: &dyn Storage,) -> Result<u64, ContractError,> {
 
-    Ok(FEE_PERCENTAGE.load(storage,)?,)
+    Ok(FEE_PERCENTAGE.load(storage,)?.into(),)
 }
 
 pub fn get_random_cw_address(storage: &dyn Storage,) -> Result<Addr, ContractError,> {
@@ -135,10 +137,10 @@ pub fn get_operator(storage: &dyn Storage,) -> Result<Addr, ContractError,> {
 
 pub fn get_min_bet(storage: &dyn Storage,) -> Result<u128, ContractError,> {
 
-    Ok(MIN_BET.load(storage,)?,)
+    Ok(MIN_BET.load(storage,)?.into(),)
 }
 
 pub fn get_gas_limit(storage: &dyn Storage,) -> Result<u64, ContractError,> {
 
-    Ok(GAS_LIMIT.load(storage,)?,)
+    Ok(GAS_LIMIT.load(storage,)?.into(),)
 }

@@ -111,12 +111,14 @@ pub fn exec_play_request(
         recipients: None,
         prng: Some(PRNG::ChaCha20,),
         jobs: vec![dice_requested_job],
-        gas_limit: gas_limit,
-        response_id: game_id,
+        gas_limit: gas_limit.into(),
+        response_id: game_id.into(),
     };
 
-    let cw_random_request_token_needed =
-        request_msg.calculate_price(random_config.gas_to_token_ratio, random_config.gas_price_per_job,);
+    let cw_random_request_token_needed = request_msg.calculate_price(
+        random_config.gas_to_token_ratio.into(),
+        random_config.gas_price_per_job.into(),
+    );
 
     let min_bet = get_min_bet(ctx.deps.storage,)?;
 
@@ -157,11 +159,11 @@ pub fn exec_play_request(
     potential_winning_amount = sub_u128(potential_winning_amount, fee_retained,)?;
 
     let game_request = GameRequest {
-        id: game_id,
+        id: game_id.into(),
         user_address: user_address.clone(),
         status: GameStatus::Requested,
-        created_at: ctx.env.block.time.seconds(),
-        updated_at: ctx.env.block.time.seconds(),
+        created_at: ctx.env.block.time.seconds().into(),
+        updated_at: ctx.env.block.time.seconds().into(),
         bet_amount: bet_amount,
         bet_currency: denom_accepted.clone(),
         game_type: play_req_msg.game_type,

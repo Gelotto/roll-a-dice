@@ -48,13 +48,13 @@ pub fn main() -> anyhow::Result<(),> {
         contract.instantiate(
             &InstantiateMsg {
                 config: Config {
-                    fee_percentage: 10,
+                    fee_percentage: 10u64.into(),
                     random_cw_address: Addr::unchecked("juno1rec44j9xq8aj4w5kun796f89njzvdlezwk7cy4",),
                     accepted_denom: "ujuno".to_string(),
                     operator: Some(sender.clone(),),
                     disabled: false,
-                    min_bet: 1000000,
-                    gas_limit: 1000000,
+                    min_bet: 1000000u128.into(),
+                    gas_limit: 1000000u64.into(),
                 },
             },
             Some(&sender,),
@@ -76,13 +76,13 @@ pub fn main() -> anyhow::Result<(),> {
 
     // can call any necessary execution messages here like adding admin, etc.
     contract.set_config(Config {
-        fee_percentage: 10,
+        fee_percentage: 10u64.into(),
         random_cw_address: Addr::unchecked("juno1rec44j9xq8aj4w5kun796f89njzvdlezwk7cy4",),
         accepted_denom: "ujuno".to_string(),
         operator: Some(sender.clone(),),
         disabled: false,
-        min_bet: 1000000,
-        gas_limit: 1000000,
+        min_bet: 1000000u128.into(),
+        gas_limit: 1000000u64.into(),
     },)?;
 
     // can also query any necessary data here from the contract

@@ -1,3 +1,5 @@
+use cosmwasm_std::Uint64;
+
 use crate::error::ContractError;
 use crate::msg::UserGamesQueryMsg;
 use crate::responses::QueryUserGamesResponse;
@@ -63,14 +65,14 @@ pub fn query_user_games(
 
     let mut user_games: Vec<GameRequest,> = Vec::with_capacity(limit as usize,);
 
-    let next_cursor_id: Option<u64,>;
+    let next_cursor_id: Option<Uint64,>;
 
     if exclusive_max_bound >= games_id.len() {
 
         next_cursor_id = None;
     } else {
 
-        next_cursor_id = Some(exclusive_max_bound as u64,);
+        next_cursor_id = Some(Uint64::from(exclusive_max_bound as u64,),);
     }
 
     for i in starting_id..exclusive_max_bound {
@@ -92,6 +94,6 @@ pub fn query_user_games(
 
     Ok(Some(QueryUserGamesResponse {
         games: user_games,
-        next_cursor: next_cursor_id,
+        next_cursor: next_cursor_id.into(),
     },),)
 }

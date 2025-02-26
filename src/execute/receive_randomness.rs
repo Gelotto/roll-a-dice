@@ -97,7 +97,7 @@ pub fn exec_handle_received_randomness(
                 GameStatus::Lost
             };
 
-            game_request.updated_at = ctx.env.block.time.seconds();
+            game_request.updated_at = ctx.env.block.time.seconds().into();
 
             game_request.dice_results = Some(dice_results.to_owned(),);
 

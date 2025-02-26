@@ -2,7 +2,10 @@ use cosmwasm_schema::{
     cw_serde,
     QueryResponses,
 };
-use cosmwasm_std::Addr;
+use cosmwasm_std::{
+    Addr,
+    Uint128,
+};
 use cw_random::client::ReceiveRandomnessMsg;
 
 #[allow(unused_imports)]
@@ -35,7 +38,7 @@ pub struct PlayRequestMsg {
 
 pub struct WithdrawMsg {
     pub token: Token,
-    pub amount: u128,
+    pub amount: Uint128,
 }
 
 #[cw_serde]
@@ -68,7 +71,7 @@ pub enum QueryMsg {
     #[returns(ConfigResponse)]
     Config {},
     #[returns(QueryPlayResponse)]
-    QueryGame { id: u64, },
+    QueryGame { id: String, },
     #[returns(QueryUserGamesResponse)]
     UserGamesQuery(UserGamesQueryMsg,),
 }

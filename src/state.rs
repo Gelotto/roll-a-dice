@@ -13,6 +13,7 @@ use cosmwasm_std::{
     Response,
     SubMsg,
     Uint128,
+    Uint64,
 };
 use cw_random::config::Config as RandomConfig;
 use cw_storage_plus::{
@@ -179,12 +180,12 @@ impl HighLowGame {
 #[cw_serde]
 
 pub struct GameRequest {
-    pub id: u64,
+    pub id: Uint64,
     pub user_address: Addr,
     pub status: GameStatus,
     pub game_type: GameType,
-    pub created_at: u64,
-    pub updated_at: u64,
+    pub created_at: Uint64,
+    pub updated_at: Uint64,
     pub bet_amount: Uint128,
     pub bet_currency: String,
     pub potential_winning_amount: Uint128,
@@ -211,7 +212,7 @@ impl GameRequest {
 
         self.status = GameStatus::Refunded;
 
-        self.updated_at = actual_time;
+        self.updated_at = actual_time.into();
 
         self.error_message = error_msg;
 

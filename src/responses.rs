@@ -1,4 +1,5 @@
 use cosmwasm_schema::cw_serde;
+use cosmwasm_std::Uint64;
 
 use crate::config::Config;
 use crate::state::GameRequest;
@@ -15,5 +16,5 @@ pub struct QueryPlayResponse(pub GameRequest,);
 
 pub struct QueryUserGamesResponse {
     pub games: Vec<GameRequest,>,
-    pub next_cursor: Option<u64,>,
+    pub next_cursor: Option<Uint64,>,
 }

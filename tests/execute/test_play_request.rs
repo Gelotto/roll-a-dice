@@ -570,7 +570,7 @@ mod test_request {
 
         let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet - 1;
+        let bet_amount = roll_a_dice_config.min_bet - Uint128::from(1u128,);
 
         let resp = app
             .execute_contract(
@@ -678,7 +678,7 @@ mod test_request {
 
         print!("{:?}", balance);
 
-        assert_eq!(balance.amount, Uint128::from(amount - bet_amount) + game_req.bet_amount);
+        assert_eq!(balance.amount, Uint128::from(amount) - bet_amount + game_req.bet_amount);
     }
 
     #[test]
@@ -785,7 +785,7 @@ mod test_request {
 
         print!("{:?}", balance);
 
-        assert_eq!(balance.amount, Uint128::from(amount - bet_amount) + game_req.bet_amount);
+        assert_eq!(balance.amount, Uint128::from(amount) - bet_amount + game_req.bet_amount);
 
         let cw_balance = app
             .wrap()
@@ -902,7 +902,7 @@ mod test_request {
 
         print!("{:?}", balance);
 
-        assert_eq!(balance.amount, Uint128::from(amount - bet_amount) + game_req.bet_amount);
+        assert_eq!(balance.amount, Uint128::from(amount) - bet_amount + game_req.bet_amount);
 
         let cw_balance = app
             .wrap()
@@ -1019,7 +1019,7 @@ mod test_request {
 
         print!("{:?}", balance);
 
-        assert_eq!(balance.amount, Uint128::from(amount - bet_amount) + game_req.bet_amount);
+        assert_eq!(balance.amount, Uint128::from(amount) - bet_amount + game_req.bet_amount);
 
         let cw_balance = app
             .wrap()
@@ -1144,7 +1144,7 @@ mod test_request {
 
         print!("{:?}", balance);
 
-        assert_eq!(balance.amount, Uint128::from(amount - bet_amount) + game_req.bet_amount);
+        assert_eq!(balance.amount, Uint128::from(amount) - bet_amount + game_req.bet_amount);
 
         let cw_balance = app
             .wrap()
@@ -1339,7 +1339,7 @@ mod test_request {
 
         assert_eq!(
             balance.amount,
-            Uint128::from(amount - bet_amount) + game_req.potential_winning_amount
+            Uint128::from(amount) - bet_amount + game_req.potential_winning_amount
         );
 
         let cw_balance = app
@@ -1460,7 +1460,7 @@ mod test_request {
 
         print!("{:?}", balance);
 
-        assert_eq!(balance.amount, Uint128::from(amount - bet_amount));
+        assert_eq!(balance.amount, Uint128::from(amount) - bet_amount);
 
         let cw_balance = app
             .wrap()
@@ -1582,7 +1582,7 @@ mod test_request {
 
         assert_eq!(
             balance.amount,
-            Uint128::from(amount - bet_amount) + game_req.potential_winning_amount
+            Uint128::from(amount) - bet_amount + game_req.potential_winning_amount
         );
 
         let cw_balance = app
@@ -1703,7 +1703,7 @@ mod test_request {
 
         print!("{:?}", balance);
 
-        assert_eq!(balance.amount, Uint128::from(amount - bet_amount));
+        assert_eq!(balance.amount, Uint128::from(amount) - bet_amount);
 
         let cw_balance = app
             .wrap()
@@ -1830,7 +1830,7 @@ mod test_request {
 
         print!("{:?}", balance);
 
-        assert_eq!(balance.amount, Uint128::from(amount - bet_amount));
+        assert_eq!(balance.amount, Uint128::from(amount) - bet_amount);
 
         let cw_balance = app
             .wrap()
@@ -1965,7 +1965,7 @@ mod test_request {
 
         print!("{:?}", balance);
 
-        assert_eq!(balance.amount, Uint128::from(amount - bet_amount));
+        assert_eq!(balance.amount, Uint128::from(amount) - bet_amount);
 
         let cw_balance = app
             .wrap()
@@ -2055,7 +2055,7 @@ mod test_request {
         //get request_id from cust_attr
         let req_id_1 = cust_attr[1].value.clone().parse::<u64>().unwrap();
 
-        let bet_amount_2 = roll_a_dice_config.min_bet * 3u128;
+        let bet_amount_2: Uint128 = (roll_a_dice_config.min_bet.u128() * 3u128).into();
 
         let resp = app
             .execute_contract(
@@ -2126,7 +2126,7 @@ mod test_request {
 
         assert_eq!(
             balance.amount,
-            Uint128::from(amount - bet_amount_1 - bet_amount_2 - bet_amount_3) + game_req.bet_amount
+            Uint128::from(amount) - bet_amount_1 - bet_amount_2 - bet_amount_3 + game_req.bet_amount
         );
 
         let new_cw_balance = app

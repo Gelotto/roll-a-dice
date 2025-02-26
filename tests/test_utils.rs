@@ -8,6 +8,8 @@ pub mod test_utils {
     };
     use cosmwasm_std::Response;
     use cosmwasm_std::StdError;
+    use cosmwasm_std::Uint128;
+    use cosmwasm_std::Uint64;
     use cosmwasm_std::{
         coins,
         Addr,
@@ -139,10 +141,10 @@ pub mod test_utils {
     pub fn get_random_cw_default_config(operator: &Addr,) -> RandomConfig {
 
         RandomConfig {
-            gas_to_token_ratio: GAS_TO_TOKEN_RATIO,
-            gas_price_per_job: GAS_PRICE_PER_JOB,
+            gas_to_token_ratio: GAS_TO_TOKEN_RATIO.into(),
+            gas_price_per_job: GAS_PRICE_PER_JOB.into(),
             denom_accepted: DENOM.to_string(),
-            max_gas_per_block: MAX_GAS_PER_BLOCK,
+            max_gas_per_block: MAX_GAS_PER_BLOCK.into(),
             max_job_per_request: MAX_JOB_PER_REQUEST,
             max_number_for_job: MAX_NUMBER_FOR_JOB,
             max_recipients: MAX_RECIPIENTS,
@@ -150,13 +152,13 @@ pub mod test_utils {
         }
     }
 
-    pub const FEE_PERCENTAGE: u64 = 5;
+    pub static FEE_PERCENTAGE: Uint64 = Uint64::new(5,);
 
-    pub const MIN_BET_AMOUNT: u128 = 1_000_000;
+    pub static MIN_BET_AMOUNT: Uint128 = Uint128::new(1_000_000u128,);
 
     pub const DISABLED: bool = false;
 
-    pub const GAS_LIMIT: u64 = 5000;
+    pub static GAS_LIMIT: Uint64 = Uint64::new(5000u64,);
 
     pub fn get_roll_dice_cw_default_config(
         random_cw_address: &Addr,
@@ -327,7 +329,7 @@ pub mod test_utils {
     ) -> Result<AppResponse, Error,> {
 
         let msg = ExecuteMsg::ReceiveRandomness(ReceiveRandomnessMsg {
-            id: game_id,
+            id: game_id.into(),
             results: vec![JobResult::U8(vec![4; number_of_dice as usize],)],
         },);
 
@@ -345,7 +347,7 @@ pub mod test_utils {
     ) {
 
         let empty_msg = ExecuteMsg::ReceiveRandomness(ReceiveRandomnessMsg {
-            id: game_id,
+            id: game_id.into(),
             results: vec![],
         },);
 
@@ -368,7 +370,7 @@ pub mod test_utils {
     ) {
 
         let wrong_type_msg = ExecuteMsg::ReceiveRandomness(ReceiveRandomnessMsg {
-            id: game_id,
+            id: game_id.into(),
             results: vec![JobResult::U16(vec![4; number_of_dice as usize],)],
         },);
 
@@ -391,7 +393,7 @@ pub mod test_utils {
     ) {
 
         let win_msg = ExecuteMsg::ReceiveRandomness(ReceiveRandomnessMsg {
-            id: game_id,
+            id: game_id.into(),
             results: vec![JobResult::U8(vec![4; number_of_dice as usize],)],
         },);
 
@@ -414,7 +416,7 @@ pub mod test_utils {
     ) {
 
         let lose_msg = ExecuteMsg::ReceiveRandomness(ReceiveRandomnessMsg {
-            id: game_id,
+            id: game_id.into(),
             results: vec![JobResult::U8(vec![2; number_of_dice as usize],)],
         },);
 
@@ -441,7 +443,7 @@ pub mod test_utils {
         let dice_number2 = chosen_number - dice_number1;
 
         let win_msg = ExecuteMsg::ReceiveRandomness(ReceiveRandomnessMsg {
-            id: game_id,
+            id: game_id.into(),
             results: vec![JobResult::U8(vec![dice_number1, dice_number2],)],
         },);
 
@@ -464,7 +466,7 @@ pub mod test_utils {
     ) {
 
         let invalid_msg = ExecuteMsg::ReceiveRandomness(ReceiveRandomnessMsg {
-            id: game_id,
+            id: game_id.into(),
             results: vec![JobResult::U8(vec![7; number_of_dice as usize],)],
         },);
 
@@ -499,7 +501,7 @@ pub mod test_utils {
         }
 
         let lose_msg = ExecuteMsg::ReceiveRandomness(ReceiveRandomnessMsg {
-            id: game_id,
+            id: game_id.into(),
             results: vec![JobResult::U8(vec![dice_number1, dice_number2],)],
         },);
 
@@ -532,7 +534,9 @@ pub mod test_utils {
         game_id: u64,
     ) -> GameRequest {
 
-        let query_msg = QueryMsg::QueryGame { id: game_id, };
+        let query_msg = QueryMsg::QueryGame {
+            id: game_id.to_string(),
+        };
 
         let resp: QueryPlayResponse = app
             .wrap()
