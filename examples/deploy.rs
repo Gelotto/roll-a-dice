@@ -15,7 +15,7 @@ use cw_orch::{
 use dotenv;
 use pretty_env_logger;
 use roll_a_dice::{
-    config::Config,
+    config::ConfigMsg,
     msg::{
         InstantiateMsg,
         MigrateMsg,
@@ -47,14 +47,14 @@ pub fn main() -> anyhow::Result<(),> {
 
         contract.instantiate(
             &InstantiateMsg {
-                config: Config {
-                    fee_percentage: 10u64.into(),
+                config: ConfigMsg {
+                    fee_percentage: 10u64.to_string(),
                     random_cw_address: Addr::unchecked("juno1rec44j9xq8aj4w5kun796f89njzvdlezwk7cy4",),
                     accepted_denom: "ujuno".to_string(),
                     operator: Some(sender.clone(),),
                     disabled: false,
-                    min_bet: 1000000u128.into(),
-                    gas_limit: 1000000u64.into(),
+                    min_bet: 1000000u128.to_string(),
+                    gas_limit: 1000000u64.to_string(),
                 },
             },
             Some(&sender,),
@@ -75,14 +75,14 @@ pub fn main() -> anyhow::Result<(),> {
     }
 
     // can call any necessary execution messages here like adding admin, etc.
-    contract.set_config(Config {
-        fee_percentage: 10u64.into(),
+    contract.set_config(ConfigMsg {
+        fee_percentage: 10u64.to_string(),
         random_cw_address: Addr::unchecked("juno1rec44j9xq8aj4w5kun796f89njzvdlezwk7cy4",),
         accepted_denom: "ujuno".to_string(),
         operator: Some(sender.clone(),),
         disabled: false,
-        min_bet: 1000000u128.into(),
-        gas_limit: 1000000u64.into(),
+        min_bet: 1000000u128.to_string(),
+        gas_limit: 1000000u64.to_string(),
     },)?;
 
     // can also query any necessary data here from the contract

@@ -94,6 +94,6 @@ mod test_config {
 
         let cfg_queried = query_roll_dice_config(&mut app, &roll_dice_contract_address,);
 
-        assert_eq!(cfg_queried, set_cfg_msg);
+        assert_eq!(cfg_queried, set_cfg_msg.to_config().unwrap());
     }
 }

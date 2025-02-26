@@ -33,7 +33,7 @@ pub mod test_utils {
         ReceiveRandomnessMsg,
         RequestedJob,
     };
-    use cw_random::config::Config as RandomConfig;
+    use cw_random::config::ConfigMsg as RandomConfigMsg;
     use cw_random::contract::{
         execute as random_execute,
         instantiate as random_instantiate,
@@ -43,6 +43,7 @@ pub mod test_utils {
     };
     use cw_random::state::AddWhitelistedAddress;
     use roll_a_dice::config::Config;
+    use roll_a_dice::config::ConfigMsg;
     use roll_a_dice::contract::{
         execute,
         instantiate,
@@ -138,13 +139,13 @@ pub mod test_utils {
 
     pub const MAX_RECIPIENTS: u16 = 10;
 
-    pub fn get_random_cw_default_config(operator: &Addr,) -> RandomConfig {
+    pub fn get_random_cw_default_config(operator: &Addr,) -> RandomConfigMsg {
 
-        RandomConfig {
-            gas_to_token_ratio: GAS_TO_TOKEN_RATIO.into(),
-            gas_price_per_job: GAS_PRICE_PER_JOB.into(),
+        RandomConfigMsg {
+            gas_to_token_ratio: GAS_TO_TOKEN_RATIO.to_string(),
+            gas_price_per_job: GAS_PRICE_PER_JOB.to_string(),
             denom_accepted: DENOM.to_string(),
-            max_gas_per_block: MAX_GAS_PER_BLOCK.into(),
+            max_gas_per_block: MAX_GAS_PER_BLOCK.to_string(),
             max_job_per_request: MAX_JOB_PER_REQUEST,
             max_number_for_job: MAX_NUMBER_FOR_JOB,
             max_recipients: MAX_RECIPIENTS,
@@ -163,16 +164,16 @@ pub mod test_utils {
     pub fn get_roll_dice_cw_default_config(
         random_cw_address: &Addr,
         operator: &Addr,
-    ) -> Config {
+    ) -> ConfigMsg {
 
-        Config {
+        ConfigMsg {
             accepted_denom: DENOM.to_string(),
             random_cw_address: random_cw_address.clone(),
-            fee_percentage: FEE_PERCENTAGE,
-            min_bet: MIN_BET_AMOUNT,
+            fee_percentage: FEE_PERCENTAGE.to_string(),
+            min_bet: MIN_BET_AMOUNT.to_string(),
             operator: Some(operator.clone(),),
             disabled: DISABLED,
-            gas_limit: GAS_LIMIT,
+            gas_limit: GAS_LIMIT.to_string(),
         }
     }
 
@@ -189,7 +190,7 @@ pub mod test_utils {
         app: &mut App,
         code_id: u64,
         sender_address: &Addr,
-        config: &Config,
+        config: &ConfigMsg,
         amount: u128,
         denom: String,
     ) -> Addr {
@@ -227,7 +228,7 @@ pub mod test_utils {
         app: &mut App,
         code_id: u64,
         sender_address: &Addr,
-        config: &RandomConfig,
+        config: &RandomConfigMsg,
     ) -> Addr {
 
         let inst_msg = RandomInstantiateMsg {
@@ -275,7 +276,7 @@ pub mod test_utils {
         },)
     }
 
-    pub fn get_set_config_execute_msg(config: Config,) -> ExecuteMsg {
+    pub fn get_set_config_execute_msg(config: ConfigMsg,) -> ExecuteMsg {
 
         ExecuteMsg::SetConfig(config,)
     }
@@ -287,7 +288,7 @@ pub mod test_utils {
 
         ExecuteMsg::Withdraw(roll_a_dice::msg::WithdrawMsg {
             token: roll_a_dice::token::Token::Denom(denom,),
-            amount: amount.into(),
+            amount: amount.to_string(),
         },)
     }
 

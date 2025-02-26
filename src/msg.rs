@@ -2,15 +2,13 @@ use cosmwasm_schema::{
     cw_serde,
     QueryResponses,
 };
-use cosmwasm_std::{
-    Addr,
-    Uint128,
-};
+use cosmwasm_std::Addr;
 use cw_random::client::ReceiveRandomnessMsg;
 
 #[allow(unused_imports)]
 use crate::{
     config::Config,
+    config::ConfigMsg,
     responses::ConfigResponse,
 };
 use crate::{
@@ -25,7 +23,7 @@ use crate::{
 #[cw_serde]
 
 pub struct InstantiateMsg {
-    pub config: Config,
+    pub config: ConfigMsg,
 }
 
 #[cw_serde]
@@ -38,14 +36,14 @@ pub struct PlayRequestMsg {
 
 pub struct WithdrawMsg {
     pub token: Token,
-    pub amount: Uint128,
+    pub amount: String,
 }
 
 #[cw_serde]
 #[derive(cw_orch::ExecuteFns,)]
 
 pub enum ExecuteMsg {
-    SetConfig(Config,),
+    SetConfig(ConfigMsg,),
     PlayRequest(PlayRequestMsg,),
     ReceiveRandomness(ReceiveRandomnessMsg,),
     FetchRandomCWConfig(FetchRandomCWConfigMsg,),

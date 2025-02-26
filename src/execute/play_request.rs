@@ -111,8 +111,8 @@ pub fn exec_play_request(
         recipients: None,
         prng: Some(PRNG::ChaCha20,),
         jobs: vec![dice_requested_job],
-        gas_limit: gas_limit.into(),
-        response_id: game_id.into(),
+        gas_limit: gas_limit.to_string(),
+        response_id: game_id.to_string(),
     };
 
     let cw_random_request_token_needed = request_msg.calculate_price(

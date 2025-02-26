@@ -67,7 +67,7 @@ pub fn execute(
     let ctx = ExecuteContext { deps, env, info, };
 
     match msg {
-        ExecuteMsg::SetConfig(config,) => exec_set_config(ctx, config,),
+        ExecuteMsg::SetConfig(config,) => exec_set_config(ctx, config.to_config().unwrap(),),
         ExecuteMsg::PlayRequest(play_req_msg,) => exec_play_request(ctx, play_req_msg,),
         ExecuteMsg::ReceiveRandomness(received_randomness_msg,) => {
             exec_handle_received_randomness(ctx, received_randomness_msg,)

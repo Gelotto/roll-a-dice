@@ -36,7 +36,7 @@ pub fn exec_withdraw(
 
     let token_requested = withdraw_msg.token;
 
-    let amount_requested = withdraw_msg.amount;
+    let amount_requested: Uint128 = withdraw_msg.amount.parse().unwrap();
 
     let type_of_token = match &token_requested {
         Token::Denom(denom,) => denom.to_string(),

@@ -250,7 +250,10 @@ impl ExecuteContext<'_,> {
 
         let InstantiateMsg { config, } = msg;
 
-        config.save(&mut self.deps, self.info.sender.clone(),)?;
+        config
+            .to_config()
+            .unwrap()
+            .save(&mut self.deps, self.info.sender.clone(),)?;
 
         let current_id = 0u64;
 

@@ -570,7 +570,7 @@ mod test_request {
 
         let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet - Uint128::from(1u128,);
+        let bet_amount = roll_a_dice_config.min_bet.parse::<Uint128>().unwrap() - Uint128::from(1u128,);
 
         let resp = app
             .execute_contract(
@@ -584,7 +584,7 @@ mod test_request {
         assert_eq!(
             ContractError::InsufficientFunds {
                 denom_requested: denom.clone(),
-                requested: Uint128::from(roll_a_dice_config.min_bet),
+                requested: roll_a_dice_config.min_bet.parse().unwrap(),
                 available: Uint128::from(bet_amount),
             },
             resp.downcast().unwrap()
@@ -641,7 +641,7 @@ mod test_request {
 
         let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -736,7 +736,7 @@ mod test_request {
 
         let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -853,7 +853,7 @@ mod test_request {
 
         let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -971,7 +971,7 @@ mod test_request {
 
         let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -1087,7 +1087,7 @@ mod test_request {
 
         let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -1288,7 +1288,7 @@ mod test_request {
 
         let high_low_request = get_play_request_high_low_execute_msg(number_of_dices,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -1411,7 +1411,7 @@ mod test_request {
 
         let high_low_request = get_play_request_high_low_execute_msg(number_of_dices,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -1531,7 +1531,7 @@ mod test_request {
 
         let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -1654,7 +1654,7 @@ mod test_request {
 
         let high_low_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -1774,7 +1774,7 @@ mod test_request {
 
         let high_low_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -1901,7 +1901,7 @@ mod test_request {
 
         let high_low_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount = roll_a_dice_config.min_bet;
+        let bet_amount: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -2037,7 +2037,7 @@ mod test_request {
 
         let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
 
-        let bet_amount_1 = roll_a_dice_config.min_bet;
+        let bet_amount_1: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(
@@ -2055,7 +2055,7 @@ mod test_request {
         //get request_id from cust_attr
         let req_id_1 = cust_attr[1].value.clone().parse::<u64>().unwrap();
 
-        let bet_amount_2: Uint128 = (roll_a_dice_config.min_bet.u128() * 3u128).into();
+        let bet_amount_2: Uint128 = (roll_a_dice_config.min_bet.parse::<u128>().unwrap() * 3u128).into();
 
         let resp = app
             .execute_contract(
@@ -2073,7 +2073,7 @@ mod test_request {
         //get request_id from cust_attr
         let req_id_2 = cust_attr[1].value.clone().parse::<u64>().unwrap();
 
-        let bet_amount_3 = roll_a_dice_config.min_bet;
+        let bet_amount_3: Uint128 = roll_a_dice_config.min_bet.parse().unwrap();
 
         let resp = app
             .execute_contract(

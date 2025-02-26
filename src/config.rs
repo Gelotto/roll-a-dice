@@ -40,6 +40,36 @@ pub struct Config {
     // pub max_bet: u128,
 }
 
+// ConfigMsg which is the same as Config but having String instead of Uint64 and Uint128
+#[cw_serde]
+
+pub struct ConfigMsg {
+    pub fee_percentage: String,
+    pub random_cw_address: Addr,
+    pub accepted_denom: String,
+    pub operator: Option<Addr,>,
+    pub disabled: bool,
+    pub min_bet: String,
+    pub gas_limit: String,
+    // pub max_bet: String,
+}
+
+impl ConfigMsg {
+    pub fn to_config(&self,) -> Result<Config, ContractError,> {
+
+        Ok(Config {
+            fee_percentage: self.fee_percentage.parse::<u64>().unwrap().into(),
+            random_cw_address: self.random_cw_address.clone(),
+            accepted_denom: self.accepted_denom.clone(),
+            operator: self.operator.clone(),
+            disabled: self.disabled,
+            min_bet: self.min_bet.parse()?,
+            gas_limit: self.gas_limit.parse::<u64>().unwrap().into(),
+            // max_bet: self.max_bet.parse()?,
+        },)
+    }
+}
+
 impl Config {
     pub fn save(
         &self,
