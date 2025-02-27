@@ -3,6 +3,7 @@ use crate::config::{
     get_disabled,
     get_fee_percentage,
     get_gas_limit,
+    get_max_bet,
     get_random_cw_address,
 };
 use crate::error::ContractError;
@@ -122,6 +123,8 @@ pub fn exec_play_request(
 
     let min_bet = get_min_bet(ctx.deps.storage,)?;
 
+    let max_bet = get_max_bet(ctx.deps.storage,)?;
+
     // get the maximum between the minimum bet and the denom amount needed
 
     let minimum_bet_amount_needed = Uint128::max(min_bet.into(), cw_random_request_token_needed,);
@@ -147,6 +150,14 @@ pub fn exec_play_request(
     }
 
     let sent_amount = ctx.info.funds.first().unwrap().amount;
+
+    if sent_amount.u128() > max_bet {
+
+        return Err(ContractError::BetAmountExceedsMaxBet {
+            sent_amount: sent_amount.into(),
+            max_bet: max_bet.into(),
+        },);
+    }
 
     let bet_amount = sub_u128(sent_amount, cw_random_request_token_needed,)?;
 

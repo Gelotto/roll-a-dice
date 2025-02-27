@@ -55,6 +55,7 @@ pub fn main() -> anyhow::Result<(),> {
                     disabled: false,
                     min_bet: 1000000u128.to_string(),
                     gas_limit: 1000000u64.to_string(),
+                    max_bet: 10000000u128.to_string(),
                 },
             },
             Some(&sender,),
@@ -83,6 +84,7 @@ pub fn main() -> anyhow::Result<(),> {
         disabled: false,
         min_bet: 1000000u128.to_string(),
         gas_limit: 1000000u64.to_string(),
+        max_bet: 10000000u128.to_string(),
     },)?;
 
     // can also query any necessary data here from the contract

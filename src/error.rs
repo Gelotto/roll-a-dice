@@ -42,6 +42,9 @@ pub enum ContractError {
 
     #[error("InvalidDiceNumber: {reason:?}")]
     InvalidDiceNumber { reason: String, },
+
+    #[error("BetAmountExceedsMaxBet: {sent_amount:?} > {max_bet:?}")]
+    BetAmountExceedsMaxBet { sent_amount: Uint128, max_bet: Uint128, },
 }
 
 impl From<ContractError,> for StdError {

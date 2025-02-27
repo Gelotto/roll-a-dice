@@ -593,6 +593,81 @@ mod test_request {
 
     #[test]
 
+    pub fn test_max_bet_excedeed() {
+
+        let not_owner_str = "not_owner".to_string();
+
+        let owner_str = "owner".to_string();
+
+        let amount = 100_000_000u128;
+
+        let denom = "ujuno".to_string();
+
+        let init_addr_vec = vec![not_owner_str.clone(), owner_str.clone()];
+
+        let mut app = def_app(init_addr_vec, amount, denom.clone(),);
+
+        let not_owner_address = Addr::unchecked(not_owner_str.clone(),);
+
+        let owner_address = Addr::unchecked(owner_str.clone(),);
+
+        let random_cw_config = get_random_cw_default_config(&owner_address,);
+
+        let rand_code_id = test_cw_random_contract(&mut app,);
+
+        let rand_contract_address =
+            test_cw_random_instantiator(&mut app, rand_code_id, &owner_address, &random_cw_config,);
+
+        let roll_a_dice_config = get_roll_dice_cw_default_config(&rand_contract_address, &owner_address,);
+
+        let roll_dice_code_id = test_roll_dice_contract(&mut app,);
+
+        let roll_dice_contract_address = test_roll_dice_instantiator(
+            &mut app,
+            roll_dice_code_id,
+            &owner_address,
+            &roll_a_dice_config,
+            10_000_000,
+            denom.clone(),
+        );
+
+        add_addresses_to_whitelist(
+            &mut app,
+            &rand_contract_address,
+            &vec![roll_dice_contract_address.clone()],
+            &owner_address,
+        );
+
+        //fetch randomcw config
+
+        fetch_random_cw_config(&mut app, &roll_dice_contract_address, &owner_address,);
+
+        let chosen_number = 2;
+
+        let exact_number_request = get_play_request_exact_number_execute_msg(chosen_number,);
+
+        let bet_amount = roll_a_dice_config.max_bet.parse::<Uint128>().unwrap() + Uint128::from(1u128,);
+
+        let resp = app
+            .execute_contract(
+                not_owner_address.clone(),
+                roll_dice_contract_address.clone(),
+                &exact_number_request,
+                &coins(bet_amount.into(), denom.clone(),),
+            )
+            .unwrap_err();
+
+        assert_eq!(
+            ContractError::BetAmountExceedsMaxBet {
+                sent_amount: bet_amount,
+                max_bet: roll_a_dice_config.max_bet.parse().unwrap(),
+            },
+            resp.downcast().unwrap()
+        );
+    }
+
+    #[test]
+
     pub fn test_error_random_cw_request_refund() {
 
         let not_owner_str = "not_owner".to_string();

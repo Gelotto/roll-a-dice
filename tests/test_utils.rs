@@ -157,6 +157,8 @@ pub mod test_utils {
 
     pub static MIN_BET_AMOUNT: Uint128 = Uint128::new(1_000_000u128,);
 
+    pub static MAX_BET_AMOUNT: Uint128 = Uint128::new(10_000_000u128,);
+
     pub const DISABLED: bool = false;
 
     pub static GAS_LIMIT: Uint64 = Uint64::new(5000u64,);
@@ -174,6 +176,7 @@ pub mod test_utils {
             operator: Some(operator.clone(),),
             disabled: DISABLED,
             gas_limit: GAS_LIMIT.to_string(),
+            max_bet: MAX_BET_AMOUNT.to_string(),
         }
     }
 

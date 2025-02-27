@@ -63,6 +63,8 @@ mod test_config {
 
         set_cfg_msg.operator = Some(not_owner_address.clone(),);
 
+        set_cfg_msg.max_bet = 1_000_000_000u128.to_string();
+
         let set_cfg_exec_msg = get_set_config_execute_msg(set_cfg_msg.clone(),);
 
         let resp = app

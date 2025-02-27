@@ -37,7 +37,7 @@ pub struct Config {
     pub disabled: bool,
     pub min_bet: Uint128,
     pub gas_limit: Uint64,
-    // pub max_bet: u128,
+    pub max_bet: Uint128,
 }
 
 // ConfigMsg which is the same as Config but having String instead of Uint64 and Uint128
@@ -51,7 +51,7 @@ pub struct ConfigMsg {
     pub disabled: bool,
     pub min_bet: String,
     pub gas_limit: String,
-    // pub max_bet: String,
+    pub max_bet: String,
 }
 
 impl ConfigMsg {
@@ -65,7 +65,7 @@ impl ConfigMsg {
             disabled: self.disabled,
             min_bet: self.min_bet.parse()?,
             gas_limit: self.gas_limit.parse::<u64>().unwrap().into(),
-            // max_bet: self.max_bet.parse()?,
+            max_bet: self.max_bet.parse()?,
         },)
     }
 }
@@ -93,7 +93,8 @@ impl Config {
 
         GAS_LIMIT.save(deps_mut.storage, &self.gas_limit,)?;
 
-        // MAX_BET.save(storage, &self.max_bet)?;
+        MAX_BET.save(deps_mut.storage, &self.max_bet,)?;
+
         Ok((),)
     }
 
@@ -113,7 +114,8 @@ impl Config {
 
         let gas_limit = GAS_LIMIT.load(deps_mut.storage,)?;
 
-        // let max_bet = MAX_BET.load(storage)?;
+        let max_bet = MAX_BET.load(deps_mut.storage,)?;
+
         Ok(Config {
             fee_percentage,
             random_cw_address,
@@ -122,7 +124,7 @@ impl Config {
             disabled,
             min_bet,
             gas_limit,
-            // max_bet,
+            max_bet,
         },)
     }
 }
@@ -137,6 +139,7 @@ pub fn get_current_config(storage: &dyn Storage,) -> Config {
         disabled: DISABLED.load(storage,).unwrap(),
         min_bet: MIN_BET.load(storage,).unwrap(),
         gas_limit: GAS_LIMIT.load(storage,).unwrap(),
+        max_bet: MAX_BET.load(storage,).unwrap(),
     }
 }
 
@@ -168,6 +171,11 @@ pub fn get_operator(storage: &dyn Storage,) -> Result<Addr, ContractError,> {
 pub fn get_min_bet(storage: &dyn Storage,) -> Result<u128, ContractError,> {
 
     Ok(MIN_BET.load(storage,)?.into(),)
+}
+
+pub fn get_max_bet(storage: &dyn Storage,) -> Result<u128, ContractError,> {
+
+    Ok(MAX_BET.load(storage,)?.into(),)
 }
 
 pub fn get_gas_limit(storage: &dyn Storage,) -> Result<u64, ContractError,> {
