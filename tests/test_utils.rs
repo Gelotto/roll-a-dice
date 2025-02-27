@@ -312,7 +312,10 @@ pub mod test_utils {
 
         app.update_block(next_block,);
 
-        let generate_msg = RandomExecuteMsg::Generate(GenerateMsg { height_id: None, },);
+        let generate_msg = RandomExecuteMsg::Generate(GenerateMsg {
+            height_id: None,
+            randomness: None,
+        },);
 
         let _exec_response = app
             .execute_contract(
