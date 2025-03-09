@@ -119,6 +119,7 @@ pub fn exec_play_request(
     let cw_random_request_token_needed = request_msg.calculate_price(
         random_config.gas_to_token_ratio.into(),
         random_config.gas_price_per_job.into(),
+        random_config.gas_offset.into(),
     );
 
     let min_bet = get_min_bet(ctx.deps.storage,)?;
@@ -181,6 +182,8 @@ pub fn exec_play_request(
         potential_winning_amount: potential_winning_amount,
         dice_results: None,
         error_message: None,
+        randomness_request_id: None,
+        randomness_serving_block_height: None,
     };
 
     ID_GAME_REQUEST_MAP.save(ctx.deps.storage, game_id.to_string(), &game_request,)?;

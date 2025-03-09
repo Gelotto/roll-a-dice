@@ -139,6 +139,8 @@ pub mod test_utils {
 
     pub const MAX_RECIPIENTS: u16 = 10;
 
+    pub const DEFAULT_GAS_OFFSET: u64 = 10;
+
     pub fn get_random_cw_default_config(operator: &Addr,) -> RandomConfigMsg {
 
         RandomConfigMsg {
@@ -150,6 +152,7 @@ pub mod test_utils {
             max_number_for_job: MAX_NUMBER_FOR_JOB,
             max_recipients: MAX_RECIPIENTS,
             operator: Some(operator.to_owned(),),
+            gas_offset: DEFAULT_GAS_OFFSET.to_string(),
         }
     }
 

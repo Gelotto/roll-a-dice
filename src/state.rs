@@ -191,6 +191,8 @@ pub struct GameRequest {
     pub potential_winning_amount: Uint128,
     pub dice_results: Option<Vec<u8,>,>,
     pub error_message: Option<String,>,
+    pub randomness_request_id: Option<String,>,
+    pub randomness_serving_block_height: Option<String,>,
 }
 
 #[cw_serde]

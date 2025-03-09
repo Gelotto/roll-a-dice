@@ -20,6 +20,7 @@ use crate::state::{
     ID_GAME_REQUEST_MAP,
     NOT_RESOLVED_BET_AMOUNT,
 };
+use crate::utils::find_attribute_value;
 use cosmwasm_std::{
     entry_point,
     to_json_binary,
@@ -138,6 +139,28 @@ pub fn reply(
             deps.storage,
             &(sub_u128(not_resolved_bet_amount, game_request.bet_amount,)?),
         )?;
+
+        ID_GAME_REQUEST_MAP.save(deps.storage, request_id.to_string(), &game_request,)?;
+    } else {
+
+        // update the game request with the id of the randomness request
+
+        let result = msg.result.unwrap();
+
+        // get attribute request_id from the result
+
+        let mut game_request = ID_GAME_REQUEST_MAP.load(deps.storage, request_id.to_string(),)?;
+
+        // SubMsgResponse { events: [Event { ty: "execute", attributes: [Attribute { key: "_contract_address", value: "contract0" }] }, Event { ty: "wasm", attributes: [Attribute { key: "_contract_address", value: "contract0" }, Attribute { key: "action", value: "request" }, Attribute { key: "request_id", value: "1" }, Attribute { key: "serving_block_height", value: "12347" }] }], data: None }
+        let randomness_request_id = find_attribute_value(&result, "wasm", "request_id",);
+
+        let serving_block_height = find_attribute_value(&result, "wasm", "serving_block_height",);
+
+        game_request.randomness_request_id = randomness_request_id;
+
+        game_request.randomness_serving_block_height = serving_block_height;
+
+        // game_request.randomness_serving_block_height = Some(result.events[0].attributes[1].value.clone(),);
 
         ID_GAME_REQUEST_MAP.save(deps.storage, request_id.to_string(), &game_request,)?;
     }

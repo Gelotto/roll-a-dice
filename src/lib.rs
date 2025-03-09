@@ -14,6 +14,7 @@ pub mod responses;
 pub mod state;
 #[cfg(not(feature = "library"))]
 pub mod token;
+pub mod utils;
 
 #[cfg(not(target_arch = "wasm32"))]
 mod interface;
