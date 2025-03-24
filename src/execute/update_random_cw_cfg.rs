@@ -36,7 +36,7 @@ pub fn exec_fetch_random_cw_cfg(ctx: ExecuteContext,) -> Result<Response, Contra
 
     let random_cw_config: RandomCwConfigResponse = deps
         .querier
-        .query_wasm_smart(random_contract_addr, &QueryRandomCWCFG::Config {},)?;
+        .query_wasm_smart(random_contract_addr, &QueryRandomCWCFG::QueryConfig {},)?;
 
     RANDOM_CONFIG.save(deps.storage, &Some(random_cw_config.0,),)?;
 
